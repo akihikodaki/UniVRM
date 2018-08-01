@@ -97,7 +97,7 @@ namespace VRM
             return materials;
         }
 
-        public static glTF_VRM_Material CreateFromMaterial(Material m, List<Texture> textures)
+        public static void Export(glTF gltf, int bufferIndex, Material m, List<Texture> textures)
         {
             var material = new glTF_VRM_Material
             {
@@ -151,12 +151,11 @@ namespace VRM
                                     var value = textures.IndexOf(texture);
                                     if (value == -1)
                                     {
-                                        Debug.LogFormat("not found {0}", texture.name);
+                                        value = TextureIO.ExportTexture(gltf, bufferIndex, texture);
+                                        textures.Add(texture);
                                     }
-                                    else
-                                    {
-                                        material.textureProperties.Add(kv.Key, value);
-                                    }
+
+                                    material.textureProperties.Add(kv.Key, value);
                                 }
 
                                 // offset & scaling
@@ -195,7 +194,7 @@ namespace VRM
                 }
             }
 
-            return material;
+            gltf.extensions.VRM.materialProperties.Add(material);
         }
     }
 }

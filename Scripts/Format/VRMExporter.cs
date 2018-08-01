@@ -109,6 +109,7 @@ namespace VRM
                     if (meta.Thumbnail != null)
                     {
                         gltf.extensions.VRM.meta.texture = TextureIO.ExportTexture(gltf, gltf.buffers.Count - 1, meta.Thumbnail);
+                        exporter.Textures.Add(meta.Thumbnail);
                     }
                     gltf.extensions.VRM.meta.licenseType = meta.LicenseType;
                     gltf.extensions.VRM.meta.otherLicenseUrl = meta.OtherLicenseUrl;
@@ -131,6 +132,7 @@ namespace VRM
                     if (meta.Thumbnail != null)
                     {
                         gltf.extensions.VRM.meta.texture = TextureIO.ExportTexture(gltf, gltf.buffers.Count - 1, meta.Thumbnail);
+                        exporter.Textures.Add(meta.Thumbnail);
                     }
 
                     // ussage pemission
@@ -201,7 +203,7 @@ namespace VRM
             // materials
             foreach (var m in exporter.Materials)
             {
-                gltf.extensions.VRM.materialProperties.Add(glTF_VRM_Material.CreateFromMaterial(m, exporter.Textures));
+                glTF_VRM_Material.Export(gltf, gltf.buffers.Count - 1, m, exporter.Textures);
             }
         }
     }
